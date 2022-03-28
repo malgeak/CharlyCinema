@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Charly Cinema</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_movie">Peliculas</string>
+    <string name="title_serie">Series</string>
+    <string name="playing_now">Reproduciendose Ahora</string>
+    <string name="most_popular">Mas Populares</string>
+    <string name="back_home">Regresar</string>
+    <string name="videos">Videos</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_movies">
+
+    <fragment
+        android:id="@+id/navigation_movies"
+        android:name="com.malgeakstudios.charlycinema.ui.movie.view.MoviesFragment"
+        android:label="@string/title_movie"
+        tools:layout="@layout/fragment_movies"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        >
+        <action
+            android:id="@+id/action_moviesFragment_to_detailFragment"
+            app:destination="@id/navigation_details"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="com.malgeakstudios.charlycinema.ui.details.view.DetailsFragment"
+        android:label="Detalles"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_details"
+        >
+
+    </fragment>
+
+</navigation>
