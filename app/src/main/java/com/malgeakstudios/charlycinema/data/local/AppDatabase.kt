@@ -17,7 +17,7 @@ import com.malgeakstudios.charlycinema.utils.converters.*
         Movie::class, MoviesPlayingNow::class, ProductionCompany::class, Season::class,
         SeriesAiringToday::class, SpokenLanguage::class, TvSeries::class, Videos::class,
         VideosSerie::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(value = [(IntArrayListConverter::class),

@@ -31,7 +31,7 @@ interface SerieService {
     ): Response<TvSeries>
 
     @GET("tv/{id_tvseries}/videos")
-    fun getSeriesVideos(
+    suspend fun getSeriesVideos(
         @Path (value = "id_tvseries")id : Int,
         @Query(value = "language")language : String
     ): Response<VideosSerieResponse>

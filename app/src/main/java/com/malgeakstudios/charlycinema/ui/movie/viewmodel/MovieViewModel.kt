@@ -22,18 +22,20 @@ class MovieViewModel @Inject constructor(
     var movieId:Int = 0
 
     var movieDetailMutableLiveData : LiveData<FormattedResponse<Movie>> = MutableLiveData()
-    val listMostPopularResponseMutableLiveData =
+    var listMostPopularResponseMutableLiveData =
         movieRepository.getMostPopularMovieList(language, pageMostPopular)
-    val listPlayingNowResponseMutableLiveData =
+    var listPlayingNowResponseMutableLiveData =
         movieRepository.getPlayingNowMovieList(language, pageMostPopular)
     var listVideoMutableLiveData : LiveData<FormattedResponse<List<Videos>>> =
         MutableLiveData()
 
     fun requestMostPopulareMovies(){
-        movieRepository.getMostPopularMovieList(language, pageMostPopular)
+        listMostPopularResponseMutableLiveData =
+            movieRepository.getMostPopularMovieList(language, pageMostPopular)
     }
 
     fun requestPlayingNowMovies(){
+        listPlayingNowResponseMutableLiveData =
         movieRepository.getPlayingNowMovieList(language, pagePlayingNow)
     }
 

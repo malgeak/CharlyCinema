@@ -10,29 +10,29 @@ data class TvSeries(
     @SerializedName("backdrop_path")
     val backdropPath : String?,
     @SerializedName("first_air_date")
-    val firstAirDate : String,
+    val firstAirDate : String?,
     @PrimaryKey
     val id : Int,
     @SerializedName("in_production")
     val inProduction : Boolean,
     @SerializedName("last_air_date")
-    val lastAirDate : String,
-    val name : String,
+    val lastAirDate : String?,
+    val name : String?,
     @SerializedName("number_of_espisodes")
-    val numberOfEpisodes : Int,
+    val numberOfEpisodes : Int?,
     @SerializedName("number_of_seasons")
-    val numberOfSeasons : Int,
+    val numberOfSeasons : Int?,
     val overview : String?,
-    val popularity : Double,
+    val popularity : Double?,
     @SerializedName("poster_path")
     val posterPath : String?,
-    val status : String,
+    val status : String?,
     val tagline : String?,
-    val type : String,
+    val type : String?,
     @SerializedName("vote_average")
-    val voteAverage : Double,
+    val voteAverage : Double?,
     @SerializedName("vote_count")
-    val voteCount : Double
+    val voteCount : Double?
 ){
     fun getImageCaratulaUrl() ="${APIUtils.BASE_IMAGE_URL}$posterPath"
 

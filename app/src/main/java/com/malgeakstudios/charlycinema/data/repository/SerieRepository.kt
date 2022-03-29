@@ -11,48 +11,58 @@ class SerieRepository @Inject constructor(
     private val remoteDataSource: SeriesRemoteDataSource,
     private val localDataSource: SerieDao
 ) {
-    suspend fun getSerie(language: String, id: Int) = getBestResponse(
-        localSource = { localDataSource.getSerieDetails(id) },
-        remoteSource = { remoteDataSource.getSeriesDetails(language, id) },
-        saveCallResult = {
-            localDataSource.insertSerie(it)
-        })
+    fun getSerie(language: String, id: Int) =
+        getBestResponse(
+            localSource = { localDataSource.getSerieDetails(id) },
+            remoteSource = { remoteDataSource.getSeriesDetails(language, id) },
+            saveCallResult = {
+                localDataSource.insertSerie(it)
+            })
 
-    suspend fun getPlayingNowSerieList(language: String, page: Int) = getBestResponse(
-        localSource = { localDataSource.getSeriePlayingNow(page) },
-        remoteSource = { remoteDataSource.getSeriesPlayingToday(language, page) },
-        saveCallResult = {
-            val listPlayingNow: ArrayList<SeriesAiringToday> = ArrayList()
-            val page = it.page
-            it.results.forEach {
-                listPlayingNow.add(SeriesAiringToday(it.id, page))
-            }
-            localDataSource.insertPlayingNowList(listPlayingNow)
-        }
-    )
+        fun getPlayingNowSerieList(language: String, page: Int) =
+            getBestResponse(
+                localSource = { localDataSource.getSeriePlayingNow(page) },
+                remoteSource = { remoteDataSource.getSeriesPlayingToday(language, page) },
+                saveCallResult = {
+                    val listPlayingNow: ArrayList<SeriesAiringToday> = ArrayList()
+                    val page = it.page
+                    it.results.forEach {
+                        listPlayingNow.add(SeriesAiringToday(it.id, page))
+                    }
+                    localDataSource.insertAll(it.results)
+                    localDataSource.insertPlayingNowList(listPlayingNow)
+                }
+            )
 
-   suspend fun getMostPopularSerieList(language: String, page: Int) = getBestResponse(
-        localSource = { localDataSource.getMostPopularSeries(page) },
-        remoteSource = { remoteDataSource.getMostPopularSeries(language, page) },
-        saveCallResult = {
-            val listMostPopular: ArrayList<MostPopularSeries> = ArrayList()
-            val page = it.page
-            it.results.forEach {
-                listMostPopular.add(MostPopularSeries(it.id, page))
-            }
-            localDataSource.insertMostPopularList(listMostPopular)
-        }
-    )
 
-    suspend fun getSerieVideos(language: String, id: Int) = getBestResponse(
-        localSource = { localDataSource.getSerieVideos(id) },
-        remoteSource = { remoteDataSource.getVideosSeries(language, id) },
-        saveCallResult = {
-            val listVideos: List<VideosSerie> = it.results
-            listVideos.forEach {
-                it.id_serie = id
-            }
-            localDataSource.insertVideos(listVideos)
-        }
-    )
+        fun getMostPopularSerieList(language: String, page: Int) =
+            getBestResponse(
+                localSource = { localDataSource.getMostPopularSeries(page) },
+                remoteSource = { remoteDataSource.getMostPopularSeries(language, page) },
+                saveCallResult = {
+                    val listMostPopular: ArrayList<MostPopularSeries> = ArrayList()
+                    val page = it.page
+                    it.results.forEach {
+                        listMostPopular.add(MostPopularSeries(it.id, page))
+                    }
+                    localDataSource.insertAll(it.results)
+                    localDataSource.insertMostPopularList(listMostPopular)
+                }
+            )
+
+
+        fun getSerieVideos(language: String, id: Int) =
+            getBestResponse(
+                localSource = { localDataSource.getSerieVideos(id) },
+                remoteSource = { remoteDataSource.getVideosSeries(language, id) },
+                saveCallResult = {
+                    val listVideos: ArrayList<VideosSerie> = ArrayList()
+                    var idSerie = id
+                    it.results.forEach {
+                        it.id_serie=idSerie
+                        listVideos.add(it)
+                    }
+                    localDataSource.insertVideos(listVideos)
+                }
+            )
 }

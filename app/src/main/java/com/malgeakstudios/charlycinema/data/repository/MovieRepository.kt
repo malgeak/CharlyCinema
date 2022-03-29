@@ -4,6 +4,7 @@ import com.malgeakstudios.charlycinema.data.local.dao.MovieDao
 import com.malgeakstudios.charlycinema.data.model.MostPopularMovies
 import com.malgeakstudios.charlycinema.data.model.MoviesPlayingNow
 import com.malgeakstudios.charlycinema.data.model.Videos
+import com.malgeakstudios.charlycinema.data.model.VideosSerie
 import com.malgeakstudios.charlycinema.data.service.datasource.MovieRemoteDataSource
 import com.malgeakstudios.charlycinema.utils.getBestResponse
 
@@ -52,9 +53,11 @@ class MovieRepository @Inject constructor(
         localSource = {localDataSource.getMovieVideos(id)},
         remoteSource = {remoteDataSource.getVideosMovie(language, id)},
         saveCallResult = {
-            val listVideos : List<Videos> = it.results
-            listVideos.forEach {
-                it.id_movie=id
+            val listVideos: ArrayList<Videos> = ArrayList()
+            var idMovie = id
+            it.results.forEach {
+                it.id_movie=idMovie
+                listVideos.add(it)
             }
             localDataSource.insertVideos(listVideos)
         }

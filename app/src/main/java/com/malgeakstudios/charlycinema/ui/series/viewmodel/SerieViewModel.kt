@@ -20,13 +20,13 @@ class SerieViewModel @Inject constructor(
     var serieId:Int = 0
 
     var serieDetailMutableLiveData : LiveData<FormattedResponse<TvSeries>> = MutableLiveData()
-    var listMostPopularResponseMutableLiveData : LiveData<FormattedResponse<List<TvSeries>>> =
-        MutableLiveData()
-    var listPlayingNowResponseMutableLiveData : LiveData<FormattedResponse<List<TvSeries>>> =
-        MutableLiveData()
+    var listMostPopularResponseMutableLiveData =
+        serieRepository.getMostPopularSerieList(language, pageMostPopular)
+    var listPlayingNowResponseMutableLiveData =
+        serieRepository.getPlayingNowSerieList(language, pagePlayingNow)
     var listVideoMutableLiveData : LiveData<FormattedResponse<List<VideosSerie>>> =
         MutableLiveData()
-    /*
+
     fun requestMostPopulareseries(){
         listMostPopularResponseMutableLiveData =
             serieRepository.getMostPopularSerieList(language, pageMostPopular)
@@ -37,15 +37,12 @@ class SerieViewModel @Inject constructor(
             serieRepository.getPlayingNowSerieList(language, pagePlayingNow)
     }
 
-    fun requestserieVideo(){
-        listVideoMutableLiveData =
-            serieRepository.getSerieVideos(language, serieId)
-    }
-
     fun requestserieDetail(){
         serieDetailMutableLiveData =
             serieRepository.getSerie(language, serieId)
+
+        listVideoMutableLiveData =
+            serieRepository.getSerieVideos(language, serieId)
     }
-    */
 
 }

@@ -29,7 +29,7 @@ interface MovieService {
     ): Response<Movie>
 
     @GET("movie/{id_movie}/videos")
-    fun getMovieVideos(
+    suspend fun getMovieVideos(
         @Path(value = "id_movie")id : Int,
         @Query(value = "language")language : String
     ): Response<VideosResponse>

@@ -1,4 +1,4 @@
-package com.malgeakstudios.charlycinema.ui.movie.view
+package com.malgeakstudios.charlycinema.ui.series.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,27 +16,26 @@ import com.malgeakstudios.charlycinema.R
 import com.malgeakstudios.charlycinema.databinding.FragmentMoviesBinding
 import com.malgeakstudios.charlycinema.ui.MainActivity
 import com.malgeakstudios.charlycinema.ui.details.view.DetailsFragment
-import com.malgeakstudios.charlycinema.ui.movie.adapter.MoviesAdapter
-import com.malgeakstudios.charlycinema.ui.movie.viewmodel.MovieViewModel
-import com.malgeakstudios.charlycinema.ui.series.view.SeriesFragment
-import com.malgeakstudios.charlycinema.utils.APIUtils
+import com.malgeakstudios.charlycinema.ui.series.adapter.SeriesAdapter
+import com.malgeakstudios.charlycinema.ui.series.viewmodel.SerieViewModel
 import com.malgeakstudios.charlycinema.utils.FormattedResponse
 import com.malgeakstudios.charlycinema.utils.RecyclerViewUtils.isLastItemDisplaying
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MoviesFragment : Fragment(),  MoviesAdapter.ItemListener{
-    private val viewModel: MovieViewModel by viewModels()
+class SeriesFragment : Fragment(),  SeriesAdapter.ItemListener{
+    private val viewModel: SerieViewModel by viewModels()
     private lateinit var binding: FragmentMoviesBinding
-    private lateinit var moviesPlayingNowAdapter : MoviesAdapter
-    private lateinit var moviesMostPopularAdapter : MoviesAdapter
+    private lateinit var seriesPlayingNowAdapter : SeriesAdapter
+    private lateinit var seriesMostPopularAdapter : SeriesAdapter
 
     companion object{
-        fun newInstance(): MoviesFragment {
-            val fragment = MoviesFragment()
+        fun newInstance(): SeriesFragment {
+            val fragment = SeriesFragment()
             return fragment
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,32 +59,34 @@ class MoviesFragment : Fragment(),  MoviesAdapter.ItemListener{
     }
 
     private fun initView(){
-        viewModel.requestPlayingNowMovies()
-        viewModel.requestMostPopulareMovies()
+        viewModel.requestPlayingNowseries()
+        viewModel.requestMostPopulareseries()
     }
 
 
+
+
     private fun setRecyclerViews(){
-        moviesPlayingNowAdapter = MoviesAdapter(this)
+        seriesPlayingNowAdapter = SeriesAdapter(this)
         binding.playingNowMoviesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        binding.playingNowMoviesRecyclerView.adapter = moviesPlayingNowAdapter
+        binding.playingNowMoviesRecyclerView.adapter = seriesPlayingNowAdapter
         binding.playingNowMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
 
-        moviesMostPopularAdapter = MoviesAdapter(this)
+        seriesMostPopularAdapter = SeriesAdapter(this)
         binding.mostPopularMoviesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-        binding.mostPopularMoviesRecyclerView.adapter = moviesMostPopularAdapter
+        binding.mostPopularMoviesRecyclerView.adapter = seriesMostPopularAdapter
         binding.mostPopularMoviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (isLastItemDisplaying(recyclerView)) {
                     viewModel.pageMostPopular += 1
-                    viewModel.requestMostPopulareMovies()
+                    viewModel.requestMostPopulareseries()
                 }
             }
         })
@@ -97,7 +97,7 @@ class MoviesFragment : Fragment(),  MoviesAdapter.ItemListener{
             when (it.status) {
                 FormattedResponse.Status.SUCCESS -> {
                     if (!it.data.isNullOrEmpty())
-                        moviesPlayingNowAdapter.setItems(ArrayList(it.data))
+                        seriesPlayingNowAdapter.setItems(ArrayList(it.data))
                     binding.progressBar.visibility = View.GONE
                 }
                 FormattedResponse.Status.ERROR -> {
@@ -113,7 +113,7 @@ class MoviesFragment : Fragment(),  MoviesAdapter.ItemListener{
             when (it.status) {
                 FormattedResponse.Status.SUCCESS -> {
                     if (!it.data.isNullOrEmpty())
-                        moviesMostPopularAdapter.setItems(ArrayList(it.data))
+                        seriesMostPopularAdapter.setItems(ArrayList(it.data))
                     binding.progressBar.visibility = View.GONE
                 }
                 FormattedResponse.Status.ERROR -> {
@@ -129,7 +129,9 @@ class MoviesFragment : Fragment(),  MoviesAdapter.ItemListener{
     override fun onItemClicked(movieId: Int) {
         findNavController().navigate(
             R.id.action_moviesFragment_to_detailFragment,
-            bundleOf("movieId" to movieId, "type" to DetailsFragment.TYPE_MOVIE)
+            bundleOf("movieId" to movieId, "type" to DetailsFragment.TYPE_SERIE)
         )
     }
+
+
 }
